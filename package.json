@@ -1,7 +1,7 @@
 {
-  "name": "env-site",
+  "name": "kunle-api",
   "version": "1.0.0",
-  "description": "Small website that loads values from a .env file",
+  "description": "API class playground: a small Express REST API protected by keys loaded from .env",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

@@ -3,155 +3,119 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Environment Loader</title>
+  <title>Kunle API · Playground</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2322c55e'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%23052e16' font-family='Georgia'%3EK%3C/text%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #0c0b0a;
-      --panel: #141210;
-      --line: #2a2520;
-      --gold: #c9a961;
-      --gold-soft: rgba(201, 169, 97, 0.12);
-      --text: #f2ede4;
-      --muted: #8f877a;
-      --ok: #7fb58a;
-      --bad: #d07a6a;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      min-height: 100vh;
-      background:
-        radial-gradient(ellipse at top, rgba(201,169,97,0.08), transparent 60%),
-        var(--bg);
-      color: var(--text);
-      font-family: "Inter", system-ui, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 20px;
-    }
-    .wrap { width: 100%; max-width: 640px; }
-    .eyebrow {
-      font-size: 11px;
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 14px;
-    }
-    h1 {
-      font-family: "Cormorant Garamond", serif;
-      font-weight: 500;
-      font-size: clamp(38px, 6vw, 54px);
-      line-height: 1.05;
-      margin-bottom: 12px;
-    }
-    .sub { color: var(--muted); font-size: 15px; line-height: 1.6; margin-bottom: 40px; }
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 22px 24px;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      transition: border-color .25s;
-    }
-    .card:hover { border-color: rgba(201,169,97,0.4); }
-    .key {
-      font-size: 11px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
-    .dot.ok { background: var(--ok); box-shadow: 0 0 10px var(--ok); }
-    .dot.bad { background: var(--bad); }
-    .val {
-      font-family: "JetBrains Mono", monospace;
-      font-size: 18px;
-      word-break: break-all;
-    }
-    button {
-      background: var(--gold-soft);
-      color: var(--gold);
-      border: 1px solid rgba(201,169,97,0.3);
-      border-radius: 999px;
-      padding: 8px 16px;
-      font: 500 12px "Inter", sans-serif;
-      letter-spacing: 0.06em;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background .2s;
-    }
-    button:hover { background: rgba(201,169,97,0.22); }
-    .foot { margin-top: 28px; font-size: 12px; color: var(--muted); }
-    .foot code { font-family: "JetBrains Mono", monospace; color: var(--gold); }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <main class="wrap">
-    <p class="eyebrow">Environment</p>
-    <h1>Variables loaded from .env</h1>
-    <p class="sub">These values are read by the server from the <code>.env</code> file and sent to this page through <code>/api/env</code>.</p>
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark">K</span>
+      <span class="brand-name">Kunle API</span>
+      <span class="brand-tag">v1</span>
+    </div>
+    <div class="health" id="health">
+      <span class="chip" data-key="TESTING"><span class="dot"></span>TESTING</span>
+      <span class="chip" data-key="KUNLE_API"><span class="dot"></span>KUNLE_API</span>
+    </div>
+  </header>
 
-    <div id="list"></div>
+  <section class="hero">
+    <p class="eyebrow">API Class · Playground</p>
+    <h1>Send a request. <em>Watch the API answer.</em></h1>
+    <p class="lede">
+      Two keys live in <code>.env</code>. <strong>TESTING</strong> is a sandbox key that can only read, 20 calls a minute.
+      <strong>KUNLE_API</strong> is the live key that can read and write, 120 calls a minute.
+      Try each one, then try no key at all.
+    </p>
+  </section>
 
-    <p class="foot" id="status">Loading...</p>
+  <main class="layout">
+    <aside class="panel endpoints">
+      <div class="panel-head">
+        <h2>Endpoints</h2>
+        <span class="muted small">Click to load</span>
+      </div>
+      <nav id="endpointList"></nav>
+    </aside>
+
+    <section class="workspace">
+      <div class="panel request">
+        <div class="panel-head">
+          <h2>Request</h2>
+          <span class="muted small" id="endpointDesc"></span>
+        </div>
+
+        <div class="url-row">
+          <select id="method" aria-label="HTTP method">
+            <option>GET</option>
+            <option>POST</option>
+            <option>PATCH</option>
+            <option>DELETE</option>
+          </select>
+          <input id="path" type="text" spellcheck="false" aria-label="Path" />
+          <button id="send" class="btn-primary">Send <kbd>Ctrl ↵</kbd></button>
+        </div>
+
+        <label class="field-label" for="key">x-api-key header</label>
+        <div class="key-row">
+          <div class="key-input">
+            <input id="key" type="password" spellcheck="false" autocomplete="off" placeholder="Type a key from your .env" />
+            <button id="toggleKey" class="btn-ghost small" type="button">Show</button>
+          </div>
+          <div class="key-chips">
+            <button class="pill" data-preset="none" type="button">No key</button>
+            <button class="pill" data-preset="wrong" type="button">Wrong key</button>
+          </div>
+        </div>
+
+        <div id="bodyWrap" class="body-wrap">
+          <label class="field-label" for="body">JSON body</label>
+          <textarea id="body" spellcheck="false" rows="4"></textarea>
+        </div>
+      </div>
+
+      <div class="panel response">
+        <div class="panel-head">
+          <h2>Response</h2>
+          <div class="meta">
+            <span id="status" class="status idle">Waiting</span>
+            <span id="time" class="muted small"></span>
+            <span id="quota" class="muted small"></span>
+          </div>
+        </div>
+        <p id="explain" class="explain">Pick an endpoint and press Send.</p>
+        <pre id="output" class="code"><span class="muted">// The response body will appear here</span></pre>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Same request with curl</h2>
+            <button id="copyCurl" class="btn-ghost small" type="button">Copy</button>
+          </div>
+          <p class="muted small">Paste this into Windows cmd to hit the API without the browser.</p>
+          <pre id="curl" class="code curl"></pre>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2>History</h2>
+            <button id="clearHistory" class="btn-ghost small" type="button">Clear</button>
+          </div>
+          <ul id="history" class="history"><li class="muted small">No requests yet.</li></ul>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <script>
-    const KEYS = ["TESTING", "KUNLE_API"];
+  <footer class="foot">
+    Keys are checked on the server. The browser never reads <code>.env</code> directly.
+  </footer>
 
-    function mask(v) { return "•".repeat(Math.min(v.length, 18)); }
-
-    function renderCard(name, value) {
-      const loaded = value !== null && value !== "";
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML =
-        '<div>' +
-          '<div class="key"><span class="dot ' + (loaded ? "ok" : "bad") + '"></span>' + name + '</div>' +
-          '<div class="val">' + (loaded ? mask(value) : "Not set") + '</div>' +
-        '</div>';
-
-      if (loaded) {
-        let shown = false;
-        const btn = document.createElement("button");
-        btn.textContent = "Reveal";
-        btn.addEventListener("click", function () {
-          shown = !shown;
-          card.querySelector(".val").textContent = shown ? value : mask(value);
-          btn.textContent = shown ? "Hide" : "Reveal";
-        });
-        card.appendChild(btn);
-      }
-      return card;
-    }
-
-    fetch("/api/env")
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
-        const list = document.getElementById("list");
-        let count = 0;
-        KEYS.forEach(function (k) {
-          list.appendChild(renderCard(k, data[k]));
-          if (data[k]) count++;
-        });
-        document.getElementById("status").innerHTML =
-          count + " of " + KEYS.length + " variables loaded from <code>.env</code>";
-      })
-      .catch(function () {
-        document.getElementById("status").textContent =
-          "Could not reach the server. Start it with: npm start";
-      });
-  </script>
+  <script src="/app.js"></script>
 </body>
 </html>
